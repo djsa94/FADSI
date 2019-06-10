@@ -239,6 +239,9 @@
     <Content Include="Views\Sitios\Create.cshtml" />
     <Content Include="Views\Sitios\Index.cshtml" />
     <Content Include="Views\Clientes\Create.cshtml" />
+    <Content Include="Views\Sitios\Details.cshtml" />
+    <Content Include="Views\Sitios\Edit.cshtml" />
+    <Content Include="Views\Sitios\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

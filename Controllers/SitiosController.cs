@@ -8,6 +8,8 @@ using ProyectoProgramado3.Models;
 using MongoDB.Bson;
 using System.Collections.Generic;
 using MongoDB.Driver;
+using MongoDB.Bson.IO;
+
 
 namespace ProyectoProgramado3.Controllers
 {
@@ -25,16 +27,19 @@ namespace ProyectoProgramado3.Controllers
         public ActionResult Index()
         {
             sitiosCollection = _dbcontext.database.GetCollection<SitiosModel>("Sitios");
-            var sitios = sitiosCollection.AsQueryable<SitiosModel>().SingleOrDefault(u => u.idSitio.Equals(Session["SessionID"]));
+            var sitios = sitiosCollection.AsQueryable<SitiosModel>().ToList<SitiosModel>();
             List<SitiosModel> list = new List<SitiosModel>();
-            list.Add(sitios);
-            return View(list);
+            //list.Add(sitios);
+            return View(sitios);
         }
 
         // GET: Sitios/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(string id)
         {
-            return View();
+            var SitiosDetails = _dbcontext.database.GetCollection<SitiosModel>("Sitios");
+            var sitios = new ObjectId(id);
+            var sitiosid = SitiosDetails.AsQueryable<SitiosModel>().SingleOrDefault(x => x.Id == sitios);
+            return View(sitiosid);
         }
 
         // GET: Sitios/Create
@@ -50,22 +55,30 @@ namespace ProyectoProgramado3.Controllers
             sitiosCollection = _dbcontext.database.GetCollection<SitiosModel>("Sitios");
             sitiosCollection.InsertOne(collection);
             Console.WriteLine("Insert");
-            return RedirectToAction("/Home/Index");
+            return RedirectToAction("Index");
         }
 
         // GET: Sitios/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string id)
         {
-            return View();
+            sitiosCollection = _dbcontext.database.GetCollection<SitiosModel>("Sitios");
+            var SitiosId = new ObjectId(id);
+            var sitios = sitiosCollection.AsQueryable<SitiosModel>().SingleOrDefault(x => x.Id == SitiosId);
+            return View(sitios);
         }
 
         // POST: Sitios/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(string id, SitiosModel collection)
         {
             try
             {
-                // TODO: Add update logic here
+                sitiosCollection = _dbcontext.database.GetCollection<SitiosModel>("Sitios");
+                sitiosCollection.DeleteOne(Builders<SitiosModel>.Filter.Eq("_id", ObjectId.Parse(id)));
+                Create(collection);
+                var filter = Builders<SitiosModel>.Filter.Eq("_id", ObjectId.Parse(id));
+                var update = Builders<SitiosModel>.Update.Set("Nombre", collection.Nombre);//Se puede agregar mas haciendo un .Set("",) extra
+                var result = sitiosCollection.UpdateOne(filter, update);
 
                 return RedirectToAction("Index");
             }
@@ -76,18 +89,22 @@ namespace ProyectoProgramado3.Controllers
         }
 
         // GET: Sitios/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string id)
         {
-            return View();
+            sitiosCollection = _dbcontext.database.GetCollection<SitiosModel>("Sitios");
+            var sitiosId = new ObjectId(id);
+            var sitios = sitiosCollection.AsQueryable<SitiosModel>().SingleOrDefault(x => x.Id == sitiosId);
+            return View(sitios);
         }
 
         // POST: Sitios/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(string id, SitiosModel collection)
         {
             try
             {
-                // TODO: Add delete logic here
+                sitiosCollection = _dbcontext.database.GetCollection<SitiosModel>("Sitios");
+                sitiosCollection.DeleteOne(Builders<SitiosModel>.Filter.Eq("_id", ObjectId.Parse(id)));
 
                 return RedirectToAction("Index");
             }
