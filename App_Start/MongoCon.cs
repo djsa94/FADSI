@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 
@@ -11,17 +12,13 @@ namespace ProyectoProgramado3.App_Start
     {
         MongoClient client;
         public IMongoDatabase database;
+        private static string _connectionString = ConfigurationManager.ConnectionStrings["MongoDB"].ToString();
 
         public MongoCon()
         {
 
-            var client = new MongoClient("mongodb://Pri:dqUHYkepawhHhlLX@tp2-shard-00-00-2drvn.mongodb.net:27017,tp2-shard-00-01-2drvn.mongodb.net:27017,tp2-shard-00-02-2drvn.mongodb.net:27017/test?ssl=true&replicaSet=TP2-shard-0&authSource=admin&retryWrites=true");
-            //var database = client.GetDatabase("LibreriaTEC-Nodo1");
-            database = client.GetDatabase("LibreriaTEC-Nodo1");
-
-
-            //(
-            //database = mongoClient.GetDatabase(ConfigurationManager.AppSettings["MongoDBName"]);
+            var client = new MongoClient(_connectionString);
+            database = client.GetDatabase("FADSI");
 
         }
     }

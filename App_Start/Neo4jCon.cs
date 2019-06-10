@@ -27,7 +27,8 @@ namespace ProyectoProgramado3.App_Start
                                             "SET a.message = $message " +
                                             "RETURN a.message + ', from node ' + id(a)",
                             new { message });
-                        return result.Single()[0].As();
+                        //return result.Single()[0].As();
+                        return true;
                     });
                     Console.WriteLine(greeting);
                 }
