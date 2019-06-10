@@ -12,7 +12,7 @@ namespace ProyectoProgramado3.App_Start
     {
         MongoClient client;
         public IMongoDatabase database;
-        private static string _connectionString = "mongodb://localhost:27017";
+        private static string _connectionString = "mongodb://localhost:27017"; 
 
         public MongoCon()
         {
