@@ -248,12 +248,16 @@
     <Content Include="Views\Clientes\Delete.cshtml" />
     <Content Include="Views\Producto\Create.cshtml" />
     <Content Include="Views\Producto\Index.cshtml" />
+    <Content Include="Views\Pedidos\Create.cshtml" />
+    <Content Include="Views\Pedidos\Index.cshtml" />
+    <Content Include="Views\Pedidos\Details.cshtml" />
+    <Content Include="Views\Pedidos\Edit.cshtml" />
+    <Content Include="Views\Pedidos\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Carrito_Compras\" />
     <Folder Include="Views\Neo4jCon\" />
-    <Folder Include="Views\Pedidos\" />
     <Folder Include="Views\Sitio_producto\" />
   </ItemGroup>
   <ItemGroup>

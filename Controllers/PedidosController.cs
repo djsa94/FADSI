@@ -14,16 +14,31 @@ namespace ProyectoProgramado3.Controllers
 {
     public class PedidosController : Controller
     {
+        private MongoCon _dbcontext;
+        private IMongoCollection<PedidosModel> pedCollection;
+
+        public PedidosController()
+        {
+            _dbcontext = new MongoCon();
+        }
+
         // GET: Pedidos
         public ActionResult Index()
         {
-            return View();
+            pedCollection = _dbcontext.database.GetCollection<PedidosModel>("Pedidos");
+            var pedidos = pedCollection.AsQueryable<PedidosModel>().ToList<PedidosModel>();
+            List<PedidosModel> list = new List<PedidosModel>();
+            //list.Add(sitios);
+            return View(pedidos);
         }
 
         // GET: Pedidos/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(string id)
         {
-            return View();
+            var PedidosDetails = _dbcontext.database.GetCollection<PedidosModel>("Pedidos");
+            var pedidos = new ObjectId(id);
+            var pedidosId = PedidosDetails.AsQueryable<PedidosModel>().SingleOrDefault(x => x.Id == pedidos);
+            return View(pedidosId);
         }
 
         // GET: Pedidos/Create
@@ -34,33 +49,35 @@ namespace ProyectoProgramado3.Controllers
 
         // POST: Pedidos/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(PedidosModel collection)
         {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            pedCollection = _dbcontext.database.GetCollection<PedidosModel>("Pedidos");
+            pedCollection.InsertOne(collection);
+            Console.WriteLine("Insert");
+            return RedirectToAction("Index");
         }
 
         // GET: Pedidos/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string id)
         {
-            return View();
+            pedCollection = _dbcontext.database.GetCollection<PedidosModel>("Pedidos");
+            var pedidoId = new ObjectId(id);
+            var pedido = pedCollection.AsQueryable<PedidosModel>().SingleOrDefault(x => x.Id == pedidoId);
+            return View(pedido);
         }
 
         // POST: Pedidos/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(string id, PedidosModel collection)
         {
             try
             {
-                // TODO: Add update logic here
+                pedCollection = _dbcontext.database.GetCollection<PedidosModel>("Pedidos");
+                pedCollection.DeleteOne(Builders<PedidosModel>.Filter.Eq("_id", ObjectId.Parse(id)));
+                Create(collection);
+                var filter = Builders<PedidosModel>.Filter.Eq("_id", ObjectId.Parse(id));
+                var update = Builders<PedidosModel>.Update.Set("Numero Pedido", collection.idPedido);//Se puede agregar mas haciendo un .Set("",) extra
+                var result = pedCollection.UpdateOne(filter, update);
 
                 return RedirectToAction("Index");
             }
@@ -71,18 +88,22 @@ namespace ProyectoProgramado3.Controllers
         }
 
         // GET: Pedidos/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string id)
         {
-            return View();
+            pedCollection = _dbcontext.database.GetCollection<PedidosModel>("Pedidos");
+            var pedidosId = new ObjectId(id);
+            var pedidos = pedCollection.AsQueryable<PedidosModel>().SingleOrDefault(x => x.Id == pedidosId);
+            return View(pedidos);
         }
 
         // POST: Pedidos/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(string id, PedidosModel collection)
         {
             try
             {
-                // TODO: Add delete logic here
+                pedCollection = _dbcontext.database.GetCollection<PedidosModel>("Pedidos");
+                pedCollection.DeleteOne(Builders<PedidosModel>.Filter.Eq("_id", ObjectId.Parse(id)));
 
                 return RedirectToAction("Index");
             }
