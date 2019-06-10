@@ -242,13 +242,18 @@
     <Content Include="Views\Sitios\Details.cshtml" />
     <Content Include="Views\Sitios\Edit.cshtml" />
     <Content Include="Views\Sitios\Delete.cshtml" />
+    <Content Include="Views\Clientes\Index.cshtml" />
+    <Content Include="Views\Clientes\Details.cshtml" />
+    <Content Include="Views\Clientes\Edit.cshtml" />
+    <Content Include="Views\Clientes\Delete.cshtml" />
+    <Content Include="Views\Producto\Create.cshtml" />
+    <Content Include="Views\Producto\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Carrito_Compras\" />
     <Folder Include="Views\Neo4jCon\" />
     <Folder Include="Views\Pedidos\" />
-    <Folder Include="Views\Producto\" />
     <Folder Include="Views\Sitio_producto\" />
   </ItemGroup>
   <ItemGroup>

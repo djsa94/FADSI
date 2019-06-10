@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ProyectoProgramado3.App_Start;
+using ProyectoProgramado3.Models;
+using MongoDB.Bson;
+using System.Collections.Generic;
+using MongoDB.Driver;
+using MongoDB.Bson.IO;
 
 namespace ProyectoProgramado3.Controllers
 {

@@ -3,15 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ProyectoProgramado3.App_Start;
+using ProyectoProgramado3.Models;
+using MongoDB.Bson;
+using System.Collections.Generic;
+using MongoDB.Driver;
+using MongoDB.Bson.IO;
 
 namespace ProyectoProgramado3.Controllers
 {
     public class ProductoController : Controller
     {
+        private MongoCon _dbcontext;
+        private IMongoCollection<ProductoModel> prodCollection;
+
+        public ProductoController()
+        {
+            _dbcontext = new MongoCon();
+        }
+
         // GET: Producto
         public ActionResult Index()
         {
-            return View();
+            prodCollection = _dbcontext.database.GetCollection<ProductoModel>("Productos");
+            var productos = prodCollection.AsQueryable<ProductoModel>().ToList<ProductoModel>();
+            List<ProductoModel> list = new List<ProductoModel>();
+            //list.Add(sitios);
+            return View(productos);
         }
 
         // GET: Producto/Details/5
@@ -28,18 +46,12 @@ namespace ProyectoProgramado3.Controllers
 
         // POST: Producto/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(ProductoModel collection)
         {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            prodCollection = _dbcontext.database.GetCollection<ProductoModel>("Productos");
+            prodCollection.InsertOne(collection);
+            Console.WriteLine("Insert");
+            return RedirectToAction("Index");
         }
 
         // GET: Producto/Edit/5
